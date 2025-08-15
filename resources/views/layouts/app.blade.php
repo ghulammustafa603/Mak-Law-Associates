@@ -510,6 +510,105 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        
+        /* User Profile Styles */
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .user-name {
+            font-weight: 500;
+            color: white;
+            margin-left: 0.5rem;
+        }
+        
+        .navbar-nav .nav-link {
+            color: white !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            color: var(--secondary-color) !important;
+            transform: translateY(-1px);
+        }
+        
+        .btn-outline-primary {
+            border-color: white;
+            color: white;
+            font-weight: 500;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: white;
+            border-color: white;
+            color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border-radius: 12px;
+            padding: 0.5rem 0;
+            margin-top: 0.5rem;
+        }
+        
+        .dropdown-item {
+            padding: 0.75rem 1.5rem;
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .dropdown-item:hover {
+            background-color: var(--light-bg);
+            color: var(--secondary-color);
+            transform: translateX(5px);
+        }
+        
+        .dropdown-divider {
+            margin: 0.5rem 0;
+            border-color: #e9ecef;
+        }
+        
+        .dropdown-header {
+            padding: 0.75rem 1.5rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .dropdown-header .badge {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .user-name {
+                display: none;
+            }
+            
+            .btn-outline-primary {
+                padding: 0.4rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
     </style>
     
     @yield('styles')
@@ -523,6 +622,55 @@
                 <i class="fas fa-balance-scale"></i>
                 MAK Law Associates
             </a>
+            
+            <!-- Login/User Profile Section -->
+            <div class="navbar-nav ms-auto">
+                @auth
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                            <div class="user-avatar me-2">
+                                @if(Auth::user()->isAdmin())
+                                    <i class="fas fa-user-shield"></i>
+                                @else
+                                    <i class="fas fa-user-circle"></i>
+                                @endif
+                            </div>
+                            <span class="user-name">{{ Auth::user()->name }}</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><div class="dropdown-header">
+                                <small class="text-muted">Logged in as</small><br>
+                                <strong>{{ Auth::user()->name }}</strong>
+                                <span class="badge bg-primary ms-2">{{ Auth::user()->isAdmin() ? 'Admin' : 'User' }}</span>
+                            </div></li>
+                            <li><hr class="dropdown-divider"></li>
+                            @if(Auth::user()->isAdmin())
+                                <li><a class="dropdown-item" href="{{ route('admin.appointments.index') }}">
+                                    <i class="fas fa-cog me-2"></i>Admin Panel
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                            @else
+                                <li><a class="dropdown-item" href="{{ route('dashboard') }}">
+                                    <i class="fas fa-calendar-check me-2"></i>My Consultations
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                            @endif
+                            <li><a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            </a></li>
+                        </ul>
+                    </div>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                @else
+                    <div class="nav-item">
+                        <a class="btn btn-outline-primary" href="{{ route('login') }}">
+                            <i class="fas fa-sign-in-alt me-1"></i>Login
+                        </a>
+                    </div>
+                @endauth
+            </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -540,9 +688,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('team') }}">Our Team</a>
                     </li>
+                    
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('contact') }}">Contact</a>
                     </li>
+                    
                 </ul>
             </div>
         </div>
@@ -599,7 +749,7 @@
                     <p class="mb-2"><i class="fas fa-phone me-2"></i>+92 21 35651637-38</p>
                     <p class="mb-2"><i class="fas fa-mobile-alt me-2"></i>0321-2302173</p>
                     <p class="mb-2"><i class="fas fa-mobile-alt me-2"></i>0329-2699996</p>
-                    <p class="mb-2"><i class="fas fa-envelope me-2"></i>mukhtarahmed.lawassociates@gmail.com</p>
+                    <p class="mb-2"><i class="fas fa-envelope me-2"></i>mukhtarahmed.lawassociates@gmail.com (Admin)</p>
                 </div>
             </div>
             <hr class="my-4" style="border-color: rgba(255,255,255,0.2);">

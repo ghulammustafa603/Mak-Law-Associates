@@ -13,7 +13,16 @@
                     <h2 class="hero-subtitle">Advocates | Legal Consultants | Corporate Advisors</h2>
                     <p class="hero-description">Premier law firm with over 28 years of experience and more than 50 reported cases. We deliver exceptional legal solutions with integrity, precision, and professionalism.</p>
                     <div class="d-flex flex-wrap gap-3" data-aos="fade-up" data-aos-delay="400">
-                        <a href="{{ route('about') }}" class="btn btn-gold">
+                        @auth
+                            <a href="{{ route('appointments.book') }}" class="btn btn-gold">
+                                <i class="fas fa-calendar-plus me-2"></i>Book Consultation
+                            </a>
+                        @else
+                            <a href="{{ route('login') }}" class="btn btn-gold">
+                                <i class="fas fa-calendar-plus me-2"></i>Book Consultation
+                            </a>
+                        @endauth
+                        <a href="{{ route('about') }}" class="btn btn-outline-light">
                             <i class="fas fa-info-circle me-2"></i>Learn More
                         </a>
                         <a href="{{ route('contact') }}" class="btn btn-outline-light">
@@ -24,7 +33,7 @@
             </div>
             <div class="col-lg-4 text-center" data-aos="fade-left" data-aos-delay="300">
                 <div class="float-animation">
-                    <i class="fas fa-balance-scale" style="font-size: 10rem; opacity: 0.2; color: var(--gold-color);"></i>
+                    <img src="{{ asset('logo.jpg') }}" alt="MAK Law Associates Logo" class="hero-logo" style="max-width: 300px; height: auto; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                 </div>
                 <div class="mt-4">
                     <div class="row text-center">
@@ -275,6 +284,56 @@
                         <span class="badge bg-primary me-2 mb-2">Criminal Law</span>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Consultation Call-to-Action Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8" data-aos="fade-right">
+                <h2 class="section-title text-white mb-3">Need Legal Consultation?</h2>
+                <p class="lead mb-4">Get expert legal advice from our experienced team. Book a consultation today and take the first step towards resolving your legal matters.</p>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-check-circle me-3 text-gold"></i>
+                            <span>Free Initial Consultation</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-check-circle me-3 text-gold"></i>
+                            <span>Expert Legal Advice</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-check-circle me-3 text-gold"></i>
+                            <span>Flexible Scheduling</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-check-circle me-3 text-gold"></i>
+                            <span>Multiple Consultation Types</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 text-center" data-aos="fade-left">
+                @auth
+                    <a href="{{ route('appointments.book') }}" class="btn btn-gold btn-lg">
+                        <i class="fas fa-calendar-plus me-2"></i>Book Consultation
+                    </a>
+                @else
+                    <a href="{{ route('login') }}" class="btn btn-gold btn-lg">
+                        <i class="fas fa-calendar-plus me-2"></i>Login to Book
+                    </a>
+                    <p class="mt-3 text-white-50">Don't have an account? <a href="{{ route('register') }}" class="text-gold">Register here</a></p>
+                @endauth
             </div>
         </div>
     </div>
